@@ -181,7 +181,7 @@ def run(emparts,config):
     #unly if we have values
     if pvpower is not None:
         for f in pvfields.split(','):
-            data[f] = pv_data.get(f,0)
+            data[f] = pv_data.get(f)
 
     influx_data['fields'] = data
     points=[influx_data]
