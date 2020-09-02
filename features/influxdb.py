@@ -40,6 +40,7 @@ import json
 import time
 import platform
 import datetime
+import math
 from influxdb import InfluxDBClient
 from influxdb.client import InfluxDBClientError
 
@@ -125,6 +126,8 @@ def run(emparts,config):
         if pvpower is None: pvpower=0
         pconsume = emparts.get('pconsume', 0)
         psupply = emparts.get('psupply', 0)
+        if psupply > pvpower:
+            pvpower = int(math.ceil(psupply)) # can'f feed more power into the grid than we produce
         pusage = pvpower + pconsume - psupply
         data['pvpower'] = pvpower
         data['pusage'] = pusage
@@ -137,6 +140,8 @@ def run(emparts,config):
             if pvpower is None: pvpower=0
             pconsume = emparts.get('pconsume', 0)
             psupply = emparts.get('psupply', 0)
+            if psupply > pvpower:
+                pvpower = int(math.ceil(psupply)) # can't feed more power into the grid than we produce
             pusage = pvpower + pconsume - psupply
             data['pvpower'] = pvpower
             data['pusage'] = pusage
