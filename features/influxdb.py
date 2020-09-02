@@ -65,10 +65,11 @@ def run(emparts,config):
     ssl = bool(config.get('ssl', 'false'))
     timeout = int(config.get('timeout', 5))
     user = config.get('user', None)
-    password = config.get('password',None )
-    mesurement= config.get('measurement','SMAEM' )
+    password = config.get('password', None)
+    mesurement= config.get('measurement','SMAEM')
     fields = config.get('fields', 'pconsume,psupply')
-    pvfields=config.get('pvfields')
+    pvfields = config.get('pvfields')
+    pvserial = config.get('pvserial', None)
     influx=None
     #connect to db, create one if needed
     try:
@@ -175,7 +176,8 @@ def run(emparts,config):
     data={}
     influx_data['measurement'] = pvmeasurement
     influx_data['time'] = now
-    pvserial=pv_data.get('serial')
+    if pvserial is None:
+        pvserial = pv_data.get('serial')
     influx_data['tags'] = {}
     influx_data['tags']["serial"] = pvserial
     #unly if we have values
